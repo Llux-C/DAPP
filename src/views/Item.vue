@@ -2,9 +2,8 @@
   <el-table
     :data="tableData"
     stripe
-    height=:calc(100vh-140px)
+    height=550px
     style="width: 100%">
-    <!-- 注意这里，calc函数内部不能有空格，减号前后尤其不能有，不然会崩溃-->
     <el-table-column
       prop="name"
       label="项目名称"
@@ -39,32 +38,19 @@
   export default {
     data() {
       return {
-        tableData: [{
-          name: '众筹',
-          sum: '10ETH',
-          introduction: '这是项目介绍',
-          date: '2022.01.01'
-        },
-        {
-          name: '众筹',
-          sum: '10ETH',
-          introduction: '这是项目介绍',
-          date: '2022.01.01'
-        },
-        {
-          name: '众筹',
-          sum: '10ETH',
-          introduction: '这是项目介绍',
-          date: '2022.01.01'
-        },
-        {
-          name: '众筹',
-          sum: '10ETH',
-          introduction: '这是项目介绍',
-          date: '2022.01.01'
-        }
-        ]
+        tableData: []
       }
+    },
+    mounted(){
+      fetch("test.json")
+      .then(res=>{
+      console.log(res)
+      return res.json()
+      })
+      .then(data=>{
+      console.log(data,this)
+      this.tableData=data
+      })
     }
   }
 </script>
