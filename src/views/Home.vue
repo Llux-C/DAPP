@@ -1,5 +1,8 @@
 <template>
   <div class="home">
+  <div>
+    <i style="float:right">欢迎，{{account}}</i>
+  </div>
     <h4>
       投资项目步骤：
     </h4>
@@ -35,8 +38,15 @@ export default {
         { url: require("../assets/home2.jpg") },
         { url: require("../assets/home3.jpg") },
       ],
+      account:""
     };
   },
+  async mounted()
+  {
+    let accounts = await this.GLOBAL.web3.eth.getAccounts();
+    this.account=accounts[0];
+    console.log(this.account)
+  }
 };
 </script>
 <style>

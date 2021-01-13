@@ -1,6 +1,6 @@
 <template>
   <el-table
-    :data="tableData"
+    :data="my_funding"
     stripe
     height=550px
     style="width: 100%">
@@ -14,9 +14,10 @@
       label="众筹金额"
       width="180">
     </el-table-column>
-    <el-table-column
-      prop="introduction"
-      label="项目介绍">
+   <el-table-column
+      prop="already"
+      label="已筹金额"
+      width="180">
     </el-table-column>
     <el-table-column
       prop="date"
@@ -38,19 +39,52 @@
   export default {
     data() {
       return {
-        tableData: []
+        allFundings: [],
+        my_funding:[]
       }
     },
-    mounted(){
-      fetch("test.json")
-      .then(res=>{
-      console.log(res)
-      return res.json()
-      })
-      .then(data=>{
-      console.log(data,this)
-      this.tableData=data.filter(function(e){return e.status==0})
-      })
+    async mounted(){
+      let accounts = await this.GLOBAL.web3.eth.getAccounts();
+      this.account=accounts[0];
+      console.log(this.account)
+
+      this.allFundings=[];
+      this.my_funding=[];
+      let funding_num = await this.GLOBAL.contract.methods.funding_num().call();
+
+      for(let i=0;i<funding_num;i++)
+      {
+        let funding=await this.GLOBAL.contract.methods.Fundings(i).call();
+        let date=new Date(funding.time*1000)
+        let f={
+          id:i,
+          name:funding.name,
+          sum:funding.sum,
+          already:funding.already_sum,
+          introduction:funding.introduction,
+          date:date.toString(),
+          status:funding.status,
+          owner:funding.owner
+        }
+        if(f.owner == this.account)
+          this.my_funding.push(f);
+        this.allFundings.push(f);
+      }
+      console.log(this.my_funding)
+    },
+    methods:{
+      async handleClick(row)
+      {
+        try {
+              await this.GLOBAL.contract.methods.want_use(row.id).send({
+                from: this.account,
+              });
+              alert("发起成功");
+            } catch (e) {
+              alert("发起失败");
+            }
+        location.reload();
+      }
     }
   }
 </script>

@@ -7,8 +7,7 @@
   >
     <el-container style="float: left">
       <el-menu-item class="el-icon-loading" index="0" @click="goTo('/')"
-        >DAPP</el-menu-item
-      >
+        >DAPP</el-menu-item>
     </el-container>
     <el-container style="float: right">
       <el-menu-item index="1" @click="goTo('/')">首页</el-menu-item>
