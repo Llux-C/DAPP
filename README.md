@@ -53,7 +53,7 @@
 + ###### 替换智能合约地址
 
   + 编译后打开Ganache软件，点击BLOCKS
-  + 进入后点击进入一个BLOCK，复制其BLOCK HASH值
+  + 进入后点击进入一个TRANSACTION，复制其CREATED CONTRACT ADDRESS值
   + 将该值复制到`./src/views/Global.vue`文件第九行引号内
 
 + ###### 运行代码
